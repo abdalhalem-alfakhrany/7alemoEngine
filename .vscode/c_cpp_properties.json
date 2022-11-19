@@ -1,0 +1,22 @@
+{
+    "configurations": [
+        {
+            "name": "Linux",
+            "includePath": [
+                "${workspaceFolder}/**",
+                "${workspaceFolder}/engine/include",
+                // "${workspaceFolder}/engine/include/rendreing",
+                "${workspaceFolder}/engine/external/glm",
+                "${workspaceFolder}/engine/external/glfw/include",
+                "${workspaceFolder}/engine/external/glad/include",
+                "${workspaceFolder}/engine/external/stbi"
+            ],
+            "defines": [],
+            "compilerPath": "/usr/bin/clang",
+            "cStandard": "c17",
+            "cppStandard": "c++14",
+            "intelliSenseMode": "linux-clang-x64"
+        }
+    ],
+    "version": 4
+}

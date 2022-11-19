@@ -1,0 +1,28 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "build all and launch test1",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/test/bin/test",
+            "stopAtEntry": false,
+            "cwd": "${workspaceFolder}/test/bin",
+            "externalConsole": false,
+            "preLaunchTask": "BuildAll",
+        },
+        {
+            "name": "buidl test1 launch it",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/test/bin/test",
+            "stopAtEntry": false,
+            "cwd": "${workspaceFolder}/test/bin",
+            "externalConsole": false,
+            "preLaunchTask": "build test",
+        }
+    ]
+}

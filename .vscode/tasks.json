@@ -1,0 +1,91 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"type": "cppbuild",
+			"label": "build engine",
+			"command": "clang++",
+			"args": [
+				// input files
+				"src/*.cpp",
+				"src/rendreing/*.cpp",
+
+				// falgs
+				"-g","-fPIC","-shared",
+
+				// output files
+				"-o","lib/libengine.so",
+
+				// include dirs
+				"-Iexternal/glfw/include",
+				"-Iexternal/glad/include",
+				"-Iexternal/stbi",
+				"-Iexternal/glm",
+				// "-Iinclude/rendreing",
+				"-Iinclude",
+
+				// link dirs
+				"-Lexternal/glfw/lib",
+				"-Lexternal/glad/lib",
+
+				// link libraries
+				"-lglfw3",
+				"-lglad",
+
+				// repath 
+				"-Wl,-Rexternal/glfw/lib",
+				"-Wl,-Rexternal/glad/lib",
+			],
+			"options": {
+				"cwd": "${workspaceFolder}/engine"
+			}
+		},
+		{
+			"type": "cppbuild",
+			"label": "build test",
+			"command": "clang++",
+			"args": [
+				// input files
+				"src/*.cpp",
+
+				// falgs
+				"-g","-fPIC",
+				
+				// output files
+				"-o",
+				"bin/test",
+				
+				// include dirs
+				"-I${workspaceFolder}/engine/include",
+				"-I${workspaceFolder}/engine/include/rendreing",
+				"-I${workspaceFolder}/engine/external/glm",
+				// "-I${workspaceFolder}/engine/external/glad/include",
+				
+				// link dirs
+				"-L${workspaceFolder}/engine/lib",
+				// "-L${workspaceFolder}/engine/external/glfw/lib",
+				// "-L${workspaceFolder}/engine/external/glad/lib",
+				
+				// link libraries
+				"-lengine",
+				// "-lglfw3",
+				// "-lglad",
+				
+				// repath 
+				"-Wl,-R${workspaceFolder}/engine/lib",
+				// "-Wl,-R${workspaceFolder}/engine/external/glfw/lib",
+				"-Wl,-R${workspaceFolder}/engine/external/glad/lib",
+			],
+			"options": {
+				"cwd": "${workspaceFolder}/test"
+			},
+		},
+		{
+			"label": "BuildAll",
+			"dependsOn": [
+				"build engine",
+                "build test",
+			]
+		}
+	]
+}
