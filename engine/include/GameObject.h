@@ -5,7 +5,7 @@
 class GameObject
 {
 private:
-    Texture *texture;
+    Texture *m_Texture;
     Vector2f m_Position;
     Vector2f m_Size;
 
@@ -19,8 +19,8 @@ public:
     void setSize(Vector2f);
 
     Vector2f getPosition();
-    Vector2f getScale();
+    Vector2f getSize();
 
-    Texture *getTexture() { return texture; };
-    void setTexture(Texture *texture) { this->texture = texture; };
+    Texture *getTexture();
+    void setTexture(Texture *texture);
 };

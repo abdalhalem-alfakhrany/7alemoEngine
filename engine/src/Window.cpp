@@ -1,6 +1,11 @@
 #include "glad/glad.h"
 #include "GLFW/glfw3.h"
 #include "Window.h"
+
+#include "imgui.h"
+#include "imgui_impl_glfw.h"
+#include "imgui_impl_opengl3.h"
+
 #include <iostream>
 
 Window::Window(int width, int height, const char *title)
@@ -18,6 +23,14 @@ Window::Window(int width, int height, const char *title)
         return;
     }
     glfwMakeContextCurrent(windowPtr);
+    
+    IMGUI_CHECKVERSION();
+    ImGui::CreateContext();
+    ImGuiIO &io = ImGui::GetIO();
+    ImGui::StyleColorsDark();
+    ImGui_ImplGlfw_InitForOpenGL(windowPtr, true);
+    ImGui_ImplOpenGL3_Init("#version 330");
+
     if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
     {
         printf("Failed to initialize GLAD\n");
@@ -28,13 +41,28 @@ Window::Window(int width, int height, const char *title)
 
 Window::~Window()
 {
+    ImGui_ImplOpenGL3_Shutdown();
+    ImGui_ImplGlfw_Shutdown();
+    ImGui::DestroyContext();
+
     glfwDestroyWindow(windowPtr);
     glfwTerminate();
 }
 
 bool Window::isOpen() { return !glfwWindowShouldClose(windowPtr); }
-void Window::render() { glfwSwapBuffers(windowPtr); }
-void Window::update() { glfwPollEvents(); }
+void Window::render()
+{
+    ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+    glfwSwapBuffers(windowPtr);
+}
+void Window::update()
+{
+    glfwPollEvents();
+    
+    ImGui_ImplOpenGL3_NewFrame();
+    ImGui_ImplGlfw_NewFrame();
+    ImGui::NewFrame();
+}
 
 bool Window::getKey(int keyCode) { return glfwGetKey(windowPtr, keyCode); }
 void Window::getMousePosition(double *x, double *y) { glfwGetCursorPos(windowPtr, x, y); }

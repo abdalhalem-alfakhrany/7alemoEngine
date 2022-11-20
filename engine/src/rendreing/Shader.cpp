@@ -16,13 +16,17 @@ Shader::Shader(const char *vertexPath, const char *fragmentPath)
         // open files
         vShaderFile.open(vertexPath);
         fShaderFile.open(fragmentPath);
+
         std::stringstream vShaderStream, fShaderStream;
+        
         // read file's buffer contents into streams
         vShaderStream << vShaderFile.rdbuf();
         fShaderStream << fShaderFile.rdbuf();
+        
         // close file handlers
         vShaderFile.close();
         fShaderFile.close();
+        
         // convert stream into string
         vertexCode = vShaderStream.str();
         fragmentCode = fShaderStream.str();
@@ -46,7 +50,6 @@ Shader::Shader(const char *vertexPath, const char *fragmentPath)
                   << infoLog << std::endl;
     }
 
-    // checkSuccess(GL_COMPILE_STATUS, vertexShader, GL_FRAGMENT_SHADER);
 
     unsigned int fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
     glShaderSource(fragmentShader, 1, &fragmentShaderSource, NULL);
@@ -60,7 +63,6 @@ Shader::Shader(const char *vertexPath, const char *fragmentPath)
                   << infoLog << std::endl;
     }
 
-    // checkSuccess(GL_COMPILE_STATUS, fragmentShader, GL_FRAGMENT_SHADER);
 
     shaderProgramId = glCreateProgram();
     glAttachShader(shaderProgramId, vertexShader);
@@ -75,39 +77,12 @@ Shader::Shader(const char *vertexPath, const char *fragmentPath)
                   << infoLog << std::endl;
     }
 
-    // checkSuccess(GL_LINK_STATUS, shaderProgramId, -1);
 
     glDeleteShader(vertexShader);
     glDeleteShader(fragmentShader);
 }
 
 Shader::~Shader() { glDeleteProgram(shaderProgramId); }
-
-bool Shader::checkSuccess(int status, unsigned int shader, int type)
-{
-    glGetProgramiv(shader, status, &success);
-    if (!success)
-    {
-        glGetProgramInfoLog(shader, 512, NULL, infoLog);
-        switch (type)
-        {
-        case GL_FRAGMENT_SHADER:
-            std::cout << "ERROR::SHADER::FRAGMENT::COMPILATION_FAILED\n"
-                      << infoLog << std::endl;
-            break;
-        case GL_VERTEX_SHADER:
-            std::cout << "ERROR::SHADER::VERTEX::COMPILATION_FAILED\n"
-                      << infoLog << std::endl;
-            break;
-        default:
-            std::cout << "ERROR::SHADER::PROGRAM::LINKING_FAILED\n"
-                      << infoLog << std::endl;
-            break;
-        }
-        return false;
-    }
-    return true;
-}
 
 void Shader::use() { glUseProgram(shaderProgramId); }
 void Shader::setBool(const char *name, bool value) const { glUniform1i(glGetUniformLocation(shaderProgramId, name), value); }

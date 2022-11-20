@@ -3,11 +3,14 @@
 
 class Texture
 {
-public:
+private:
     unsigned int textureId;
     unsigned int textureNumber;
+
+public:
     Texture(const char *texturePath);
     ~Texture();
 
-    unsigned int getTextureNumber() { return textureNumber; };
+    unsigned int getTextureNumber();
+    unsigned int getTextureId();
 };

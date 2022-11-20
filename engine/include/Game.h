@@ -8,9 +8,12 @@ class Game
 private:
     void render();
 
-    std::vector<GameObject *> gameObjects;
+    std::vector<Texture *> textures;
     Rendrer *rendrer;
     Window *window;
+
+public:
+    std::vector<GameObject *> gameObjects;
 
 public:
     Game(int width, int height, const char *title);
@@ -21,15 +24,20 @@ public:
     void addObject(GameObject *gameObject);
     void removeObject(GameObject *gameObject);
 
+    void addTexture(Texture *texture);
+    void removeTexture(Texture *texture);
+
     bool isKeyDown(int keyCode);
     bool isKeyUp(int keyCode);
 
-    void getMousePosition(double *x, double *y);
+    void getMousePosition(float *x, float *y);
     bool isMouseButtonDown(int button);
     bool isMouseButtonUp(int button);
 
     void virtual onCreate() = 0;
     void virtual onDestroy() = 0;
+
+    void virtual onImgui() = 0;
 
     void virtual onUpdate() = 0;
 };

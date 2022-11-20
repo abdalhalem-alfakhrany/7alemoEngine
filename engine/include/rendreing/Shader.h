@@ -20,5 +20,4 @@ public:
     void setFloat(const char *name, float value) const;
     void setMat4(const char *name, float *value) const;
 
-    bool checkSuccess(int status, unsigned int shader, int type);
 };

@@ -19,22 +19,25 @@
 				// include dirs
 				"-Iexternal/glfw/include",
 				"-Iexternal/glad/include",
+				"-Iexternal/imgui/include",
 				"-Iexternal/stbi",
 				"-Iexternal/glm",
-				// "-Iinclude/rendreing",
 				"-Iinclude",
 
 				// link dirs
 				"-Lexternal/glfw/lib",
 				"-Lexternal/glad/lib",
+				"-Lexternal/imgui/lib",
 
 				// link libraries
 				"-lglfw3",
 				"-lglad",
+				"-limgui",
 
 				// repath 
 				"-Wl,-Rexternal/glfw/lib",
 				"-Wl,-Rexternal/glad/lib",
+				"-Wl,-Rexternal/imgui/lib",
 			],
 			"options": {
 				"cwd": "${workspaceFolder}/engine"
@@ -57,24 +60,20 @@
 				
 				// include dirs
 				"-I${workspaceFolder}/engine/include",
-				"-I${workspaceFolder}/engine/include/rendreing",
-				"-I${workspaceFolder}/engine/external/glm",
-				// "-I${workspaceFolder}/engine/external/glad/include",
+				"-I${workspaceFolder}/engine/external/imgui/include",
 				
 				// link dirs
 				"-L${workspaceFolder}/engine/lib",
-				// "-L${workspaceFolder}/engine/external/glfw/lib",
-				// "-L${workspaceFolder}/engine/external/glad/lib",
+				"-L${workspaceFolder}/engine/external/imgui/lib",
 				
 				// link libraries
 				"-lengine",
-				// "-lglfw3",
-				// "-lglad",
+				"-limgui",
 				
 				// repath 
 				"-Wl,-R${workspaceFolder}/engine/lib",
-				// "-Wl,-R${workspaceFolder}/engine/external/glfw/lib",
 				"-Wl,-R${workspaceFolder}/engine/external/glad/lib",
+				"-Wl,-R${workspaceFolder}/engine/external/imgui/lib",
 			],
 			"options": {
 				"cwd": "${workspaceFolder}/test"
@@ -82,6 +81,7 @@
 		},
 		{
 			"label": "BuildAll",
+			"dependsOrder": "sequence",
 			"dependsOn": [
 				"build engine",
                 "build test",

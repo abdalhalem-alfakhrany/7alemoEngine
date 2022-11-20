@@ -4,11 +4,10 @@
 #define STB_IMAGE_IMPLEMENTATION
 #include "stb_image.h"
 
-static int texN = 0;
+static int texN;
 
 Texture::Texture(const char *texturePath)
 {
-    textureNumber = texN;
     glGenTextures(1, &textureId);
 
     glBindTexture(GL_TEXTURE_2D, textureId);
@@ -32,9 +31,13 @@ Texture::Texture(const char *texturePath)
         std::cout << "Failed to load " << texturePath << std::endl;
     }
     stbi_image_free(data);
-    glActiveTexture(GL_TEXTURE0 + texN);
-    glBindTexture(GL_TEXTURE_2D, textureId);
+
+    textureNumber = texN;
+
     texN += 1;
 }
 
 Texture::~Texture() {}
+
+unsigned int Texture::getTextureNumber() { return textureNumber; }
+unsigned int Texture::getTextureId() { return textureId; }

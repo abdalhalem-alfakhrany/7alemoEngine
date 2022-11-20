@@ -1,7 +1,10 @@
 #pragma once
 #include "GameObject.h"
+#include "rendreing/Shader.h"
+#include "rendreing/Texture.h"
+
 #include <vector>
-class Shader;
+
 class Rendrer
 {
 private:
@@ -12,5 +15,5 @@ public:
     Rendrer();
     ~Rendrer();
 
-    void render(std::vector<GameObject*> *gameObjects);
+    void render(std::vector<GameObject *> *gameObjects, std::vector<Texture *> *textures);
 };

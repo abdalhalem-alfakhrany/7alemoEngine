@@ -29,7 +29,7 @@ Rendrer::Rendrer()
     glGenBuffers(1, &EBO);
 
     glBindVertexArray(VAO);
-
+    glEnable(GL_BLEND);
     glBindBuffer(GL_ARRAY_BUFFER, VBO);
     glBufferData(GL_ARRAY_BUFFER, 100 * 4 * strideSize, nullptr, GL_DYNAMIC_DRAW);
 
@@ -50,7 +50,6 @@ Rendrer::Rendrer()
 
     shader->use();
 
-    shader->setInt("texture1", 0);
     int textures[] = {0, 1, 2, 3, 4, 5, 6, 7, 8};
     shader->setIntArray("textures", 9, textures);
 
@@ -79,7 +78,7 @@ Rendrer::~Rendrer()
     delete shader;
 }
 
-void Rendrer::render(std::vector<GameObject *> *gameObjects)
+void Rendrer::render(std::vector<GameObject *> *gameObjects, std::vector<Texture *> *textures)
 {
     glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT);
@@ -91,11 +90,18 @@ void Rendrer::render(std::vector<GameObject *> *gameObjects)
     //     200,200,0, 1,1,0,
     // };
 
-    float *vertices = new float[gameObjects->size() * 6 * 4];
+    for (int i = 0; i < textures->size(); i++)
+    {
+        glActiveTexture(GL_TEXTURE0 + textures->at(i)->getTextureNumber());
+        glBindTexture(GL_TEXTURE_2D, textures->at(i)->getTextureId());
+    }
+
+    float *vertices = new float[2 * 6 * 4];
+
     for (int i = 0; i < gameObjects->size(); i++)
     {
         Vector2f position = gameObjects->at(i)->getPosition();
-        Vector2f size = gameObjects->at(i)->getScale();
+        Vector2f size = gameObjects->at(i)->getSize();
         float texture = gameObjects->at(i)->getTexture()->getTextureNumber();
 
         vertices[0 + i * 24] = position.x;
@@ -128,11 +134,10 @@ void Rendrer::render(std::vector<GameObject *> *gameObjects)
     }
 
     glBindBuffer(GL_ARRAY_BUFFER, VBO);
-    glBufferSubData(GL_ARRAY_BUFFER, 0, gameObjects->size() * 6 * 24 * sizeof(float), vertices);
+    glBufferSubData(GL_ARRAY_BUFFER, 0, gameObjects->size() * 6 * 4 * sizeof(float), vertices);
 
     shader->use();
     glBindVertexArray(VAO);
-    int elementsSize = gameObjects->size() * 6;
-    glDrawElements(GL_TRIANGLES, elementsSize, GL_UNSIGNED_INT, 0);
+    glDrawElements(GL_TRIANGLES, gameObjects->size() * 6, GL_UNSIGNED_INT, 0);
     delete[] vertices;
 }
